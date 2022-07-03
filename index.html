@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function checkUser() {
+            stdID = document.getElementById("stdID").value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                document.getElementById("showID").innerHTML = "Loading...."
+                if (this.readyState == 4 && this.status == 200) {
+                    var reponse = JSON.parse(this.responseText)
+                    if (reponse.length == 0) return document.getElementById("showID").innerHTML = "ไม่พบผู้ใช้งาน"
+                    try { document.getElementById("showID").innerHTML = reponse[0].stdName; } catch { document.getElementById("showID").innerHTML = "Something went wrong"; }
+                }
+            };
+            xhttp.open("GET", `https://script.google.com/macros/s/AKfycbz1k6YPD8_b5nXxLhxEIZs8Z1S-ubNWQS5aDovnUTnA-Beoj-qlWVOYqH6uOPm-sdWi9w/exec?action=getUser&stdID=${stdID}`, true);
+            xhttp.send();
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Student ID</h1>
+    <input type="text" id="stdID" required>
+    <h1 id="showID"></h1>
+    <button onclick="checkUser()">Check</button>
+</body>
+
+</html>
