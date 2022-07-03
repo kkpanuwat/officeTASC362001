@@ -5,30 +5,121 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Office TA SC361002</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
     <script>
+        let indexUser = 0;
+        let stdID = "";
         function checkUser() {
             stdID = document.getElementById("stdID").value
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 document.getElementById("showID").innerHTML = "Loading...."
                 if (this.readyState == 4 && this.status == 200) {
-                    var reponse = JSON.parse(this.responseText)
-                    if (reponse.length == 0) return document.getElementById("showID").innerHTML = "ไม่พบผู้ใช้งาน"
-                    try { document.getElementById("showID").innerHTML = reponse[0].stdName; } catch { document.getElementById("showID").innerHTML = "Something went wrong"; }
+                    var response = JSON.parse(this.responseText)
+                    if (response.length == 0) {
+                        document.getElementById("showID").innerHTML = "ไม่พบผู้ใช้งาน" + "<hr>"
+                        document.getElementById("control").className = "dontShow"
+                        return
+                    }
+                    try {
+                        indexUser = response[0].indexUser
+                        console.log(response[0])
+                        document.getElementById("showID").innerHTML = response[0].stdName + "<hr>";
+                        stdID = response[0].stdID;
+                        document.getElementById("control").className = "show"
+                    } catch {
+                        document.getElementById("showID").innerHTML = "Something went wrong";
+                        document.getElementById("control").className = "dontShow"
+                    }
                 }
             };
-            xhttp.open("GET", `https://script.google.com/macros/s/AKfycbz1k6YPD8_b5nXxLhxEIZs8Z1S-ubNWQS5aDovnUTnA-Beoj-qlWVOYqH6uOPm-sdWi9w/exec?action=getUser&stdID=${stdID}`, true);
+            xhttp.open("GET", `https://script.google.com/macros/s/AKfycbypCqnWhboI39QGCtN0rPWdj0EE8mNP5aVTYgPTCoT7leM9ehG8RIM_9hXqbMj3mqxmhg/exec?action=getUser&stdID=${stdID}`, true);
+            xhttp.send();
+        }
+
+        async function test() {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            location.reload();
+        }
+
+        function addScore() {
+            let score = document.getElementById('score').value
+            let lab = document.getElementById('lab').value
+            let number = document.getElementById('number').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                document.getElementById("process").innerHTML = "Loading...."
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText)
+                    if (response.error) {
+                        document.getElementById("process").innerHTML = "Something went wrong!!!" + "<hr>"
+                        return
+                    }
+                    try {
+                        document.getElementById("process").innerHTML = "<h4 class='success'>"+response.message+"</h4>";
+                        test()
+                    } catch {
+                        document.getElementById("process").innerHTML = "Something went wrong";
+                    }
+                }
+            };
+            console.log(`https://script.google.com/macros/s/AKfycbypCqnWhboI39QGCtN0rPWdj0EE8mNP5aVTYgPTCoT7leM9ehG8RIM_9hXqbMj3mqxmhg/exec?action=addScore&stdID=${stdID}&lab=${lab}&number=${number}&indexUser=${indexUser}&score=${score}`)
+            xhttp.open("GET", `https://script.google.com/macros/s/AKfycbwrJUfaJWZPw3SmdSIXsvLCgGBrY776Y3YcdaEVzveuv5wOWGmH0wN8q7KDHE4T0QT9CQ/exec?action=addScore&stdID=${stdID}&lab=${lab}&number=${number}&indexUser=${indexUser}&score=${score}`, true);
             xhttp.send();
         }
     </script>
 </head>
 
 <body>
-    <h1>Student ID</h1>
-    <input type="text" id="stdID" required>
-    <h1 id="showID"></h1>
-    <button onclick="checkUser()">Check</button>
+    <div class="content">
+        <div class="inner-content">
+            <h1>Office TA Sc361002</h1>
+            <h5>Please Enter Information</h5>
+            <div> <input type="text" id="stdID" placeholder="024-1" required>
+                <button onclick="checkUser()"" class=" btn-search">Search</button>
+            </div>
+            <div id="showID"></div>
+            <div id="control" class="dontShow">
+                <div> <select id="lab">
+                        <option value="1">Lab01</option>
+                        <option value="2">Lab02</option>
+                        <option value="3">Lab03</option>
+                        <option value="4">Lab04</option>
+                        <option value="5">Lab05</option>
+                        <option value="6">Lab06</option>
+                        <option value="7">Lab07</option>
+                        <option value="8">Lab08</option>
+                        <option value="9">Lab09</option>
+                        <option value="10">Lab10</option>
+                        <option value="11">Lab11</option>
+                        <option value="12">Lab12</option>
+                        <option value="13">Lab13</option>
+                        <option value="14">Lab14</option>
+                        <option value="15">Lab15</option>
+                    </select>
+                    <select id="number">
+                        <option value="1">Problem 1</option>
+                        <option value="2">Problem 2</option>
+                        <option value="3">Problem 3</option>
+                        <option value="4">Problem 4</option>
+                        <option value="5">Problem 5</option>
+                    </select>
+                    <input type="number" id="score" min="0" max="1" value="0">
+                </div>
+                <button class="btn-submit" onclick="addScore()">Submit :)</button>
+                <div id="process"></div>
+            </div>
+        </div>
+        <!-- <h1>Student ID</h1>
+        <input type="text" id="stdID" required>
+        <h1 id="showID"></h1>
+        <button onclick="checkUser()">Check</button> -->
+    </div>
+
 </body>
 
 </html>
