@@ -60,7 +60,7 @@
                         return
                     }
                     try {
-                        document.getElementById("process").innerHTML = "<h4 class='success'>"+response.message+"</h4>";
+                        document.getElementById("process").innerHTML = "<h4 class='success'>" + response.message + "</h4>";
                         test()
                     } catch {
                         document.getElementById("process").innerHTML = "Something went wrong";
@@ -79,12 +79,13 @@
         <div class="inner-content">
             <h1>Office TA Sc361002</h1>
             <h5>Please Enter Information</h5>
-            <div> <input type="text" id="stdID" placeholder="024-1" required>
+            <div class="search-blog"> <input type="text" id="stdID" placeholder="024-1" required>
                 <button onclick="checkUser()"" class=" btn-search">Search</button>
             </div>
             <div id="showID"></div>
             <div id="control" class="dontShow">
-                <div> <select id="lab">
+                <div class="control-blog">
+                    <select id="lab">
                         <option value="1">Lab01</option>
                         <option value="2">Lab02</option>
                         <option value="3">Lab03</option>

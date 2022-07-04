@@ -25,7 +25,6 @@ body {
 
 #stdID {
     margin-top: 3rem;
-    width: 50vw;
     height: 8vh;
     border-radius: 1rem;
     outline: 1px solid transparent;
@@ -39,7 +38,6 @@ body {
 }
 
 .btn-search {
-    width: 20vw;
     height: 8vh;
     border-radius: 1rem;
     outline: 1px solid transparent;
@@ -72,8 +70,8 @@ hr {
 
 
 .btn-submit {
+    width: 50vw;
     margin-top: 3rem;
-    width: 70vw;
     height: 8vh;
     border-radius: 1rem;
     outline: 1px solid transparent;
@@ -85,7 +83,6 @@ hr {
 }
 
 select {
-    width: 20vw;
     font-size: 1.5rem;
     border-radius: 0.5rem;
     outline: 1px solid transparent;
@@ -93,8 +90,14 @@ select {
     padding: 1rem;
 }
 
+.control-blog {
+    width: 50vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
 #score {
-    width: 30vw;
     font-size: 1.5rem;
     border-radius: 0.5rem;
     outline: 1px solid transparent;
@@ -109,4 +112,21 @@ select {
 
 .success {
     color: green;
+}
+
+
+.search-blog {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+@media only screen and (max-width: 1024px) {
+    .search-blog {
+        grid-template-columns: 1fr;
+    }
+    .control-blog {
+        grid-template-columns: 1fr;
+    }
 }
