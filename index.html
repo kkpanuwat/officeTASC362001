@@ -13,6 +13,8 @@
     <script>
         let indexUser = 0;
         let stdID = "";
+        let extraPoint = 0;
+        let url = 'https://script.google.com/macros/s/AKfycbxDAXo5167kXhU9JIhurfS1jnnZcsT8gUsE6fwTZw_1nFWALUGjyAAMjoSejTqOvsnT0A/exec'
         function checkUser() {
             stdID = document.getElementById("stdID").value
             var xhttp = new XMLHttpRequest();
@@ -27,6 +29,7 @@
                     }
                     try {
                         indexUser = response[0].indexUser
+                        extraPoint = response[0].extraPoint
                         console.log(response[0])
                         document.getElementById("showID").innerHTML = response[0].stdName + "<hr>";
                         stdID = response[0].stdID;
@@ -37,13 +40,38 @@
                     }
                 }
             };
-            xhttp.open("GET", `https://script.google.com/macros/s/AKfycbypCqnWhboI39QGCtN0rPWdj0EE8mNP5aVTYgPTCoT7leM9ehG8RIM_9hXqbMj3mqxmhg/exec?action=getUser&stdID=${stdID}`, true);
+            xhttp.open("GET", `${url}?action=getUser&stdID=${stdID}`, true);
             xhttp.send();
         }
 
         async function test() {
             await new Promise(resolve => setTimeout(resolve, 1000));
             location.reload();
+        }
+
+        function addExtrapoint() {
+            let score = document.getElementById('score').value
+            let lab = document.getElementById('lab').value
+            let number = document.getElementById('number').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                document.getElementById("process").innerHTML = "Loading...."
+                if (this.readyState == 4 && this.status == 200) {
+                   var response = JSON.parse(this.responseText)
+                   if (response.error) {
+                       document.getElementById("process").innerHTML = "Something went wrong!!!" + "<hr>"
+                       return
+                   }
+                   try {
+                       document.getElementById("process").innerHTML = "<h4 class='success'>" + response.message + "</h4>";
+                       test()
+                   } catch {
+                       document.getElementById("process").innerHTML = "Something went wrong";
+                   }
+                }
+            };
+            xhttp.open("GET", `${url}?action=addExtrapoint&stdID=${stdID}&indexUser=${indexUser}&extrapoint=${extraPoint}`, true);
+            xhttp.send();
         }
 
         function addScore() {
@@ -67,8 +95,8 @@
                     }
                 }
             };
-            console.log(`https://script.google.com/macros/s/AKfycbypCqnWhboI39QGCtN0rPWdj0EE8mNP5aVTYgPTCoT7leM9ehG8RIM_9hXqbMj3mqxmhg/exec?action=addScore&stdID=${stdID}&lab=${lab}&number=${number}&indexUser=${indexUser}&score=${score}`)
-            xhttp.open("GET", `https://script.google.com/macros/s/AKfycbwrJUfaJWZPw3SmdSIXsvLCgGBrY776Y3YcdaEVzveuv5wOWGmH0wN8q7KDHE4T0QT9CQ/exec?action=addScore&stdID=${stdID}&lab=${lab}&number=${number}&indexUser=${indexUser}&score=${score}`, true);
+            console.log(`${url}?action=addScore&stdID=${stdID}&lab=${lab}&number=${number}&indexUser=${indexUser}&score=${score}`)
+            xhttp.open("GET", `${url}?action=addScore&stdID=${stdID}&lab=${lab}&number=${number}&indexUser=${indexUser}&score=${score}`, true);
             xhttp.send();
         }
     </script>
@@ -111,6 +139,7 @@
                     </select>
                     <input type="number" id="score" min="0" max="1" value="0">
                 </div>
+                <button onclick="addExtrapoint()" class="btn-submit">ADD EXTRAPOINT</button>
                 <button class="btn-submit" onclick="addScore()">Submit :)</button>
                 <div id="process"></div>
             </div>
